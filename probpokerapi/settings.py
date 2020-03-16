@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from mongoengine import connect
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'evaluators',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'graphene',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -85,15 +88,17 @@ CORS_ORIGIN_REGEX_WHITELIST = [
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+MONGO_HOST='mongodb://localhost'
+MONGO_PORT=27017
 DATABASES = {
        'default': {
            'ENGINE': 'djongo',
            'NAME': 'the-game',
-           'HOST': 'mongodb://localhost',
-           'PORT': 27017,
+           'HOST': MONGO_HOST,
+           'PORT': MONGO_PORT,
        }
    }
+connect('the-game', host=MONGO_HOST, port=MONGO_PORT)
 
 
 # Password validation
@@ -135,3 +140,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 FRONTEND_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'frontend', 'dist', 'frontend'))
+
+GRAPHENE = {
+    'SCHEMA': 'evaluators.schema.schema' # Where your Graphene schema lives
+}

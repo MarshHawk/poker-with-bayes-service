@@ -17,13 +17,14 @@ from django.conf import settings
 from django.conf.urls.static import static, serve
 from django.contrib import admin
 from django.urls import path, re_path
+from graphene_django.views import GraphQLView
 
 import evaluators.views
-import evaluators.api_views
 
 urlpatterns = [
     path('api/v1/hand', evaluators.views.create),
-    path('api/v1/some', evaluators.views.SomeList.as_view()),
+    path('api/v1/hands', evaluators.views.get_all_hands),
     path('admin/', admin.site.urls),
-    re_path(r'^(?P<path>.*)$', serve, {'document_root': settings.FRONTEND_ROOT})
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
+    re_path(r'^(?P<path>.*)$', serve, {'document_root': settings.FRONTEND_ROOT}),
 ]
