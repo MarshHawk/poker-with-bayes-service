@@ -8,9 +8,6 @@ from evaluators.game import deal
 
 class CreateHand(graphene.Mutation):
 
-    class Arguments:
-        pass
-
     hand = graphene.Field(HandType)
     def mutate(self, info):
         hand = deal()
