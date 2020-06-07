@@ -6,11 +6,9 @@ from .types import HandType
 from .mutations import Mutations
 
 class Query(graphene.ObjectType):
-    all_hands = graphene.List(HandType)
-    hand = graphene.Field(HandType,
-                              id=graphene.Int())
+    hands = graphene.List(HandType)
 
-    def all_hands(self, info):
-        return Hand.objects.mongo_find({},{'_id': False})
+    def resolve_hands(self, info):
+        return Hand.objects.all()
 
 schema = graphene.Schema(query=Query, mutation=Mutations)
